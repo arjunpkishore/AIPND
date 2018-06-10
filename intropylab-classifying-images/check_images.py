@@ -26,6 +26,7 @@ from os import listdir
 from datetime import datetime, timedelta
 from random import choice
 
+
 # Imports classifier function for using CNN to classify images
 from classifier import classifier
 
@@ -142,7 +143,7 @@ def get_pet_labels(image_dir):
     petlabels_dic = {}
     try:
         for f in listdir(image_dir):
-            petlabels_dic[f] = f[0:rfind("_").replace("_"," ")]
+            petlabels_dic[f] = f[0:f.rfind("_")].replace("_"," ")
 
         return petlabels_dic
 
@@ -150,7 +151,7 @@ def get_pet_labels(image_dir):
         raise FileNotFoundError("Invalid path {} while building pet labels".format(image_dir))
 
 
-def classify_images(images_dir, petlabel_dic):
+def classify_images():
     """
     Creates classifier labels with classifier function, compares labels, and
     creates a dictionary containing both labels and comparison of them to be
