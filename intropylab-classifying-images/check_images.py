@@ -34,48 +34,55 @@ from print_functions_for_lab_checks import *
 
 # Main program function defined below
 def main():
-    # TODO: 1. Define start_time to measure total program runtime by
-    # collecting start time
-    start_time = datetime.now()
+    try:
+        # TODO: 1. Define start_time to measure total program runtime by
+        # collecting start time
+        start_time = datetime.now()
 
-    # TODO: 2. Define get_input_args() function to create & retrieve command
-    # line arguments
-    in_arg = get_input_args()
+        # TODO: 2. Define get_input_args() function to create & retrieve command
+        # line arguments
+        in_arg = get_input_args()
 
-    # TODO: 3. Define get_pet_labels() function to create pet image labels by
-    # creating a dictionary with key=filename and value=file label to be used
-    # to check the accuracy of the classifier function
-    answers_dic = get_pet_labels()
+        # TODO: 3. Define get_pet_labels() function to create pet image labels by
+        # creating a dictionary with key=filename and value=file label to be used
+        # to check the accuracy of the classifier function
+        answers_dic = get_pet_labels(in_arg.dir)
 
-    # TODO: 4. Define classify_images() function to create the classifier
-    # labels with the classifier function uisng in_arg.arch, comparing the
-    # labels, and creating a dictionary of results (result_dic)
-    result_dic = classify_images()
+        # TODO: 4. Define classify_images() function to create the classifier
+        # labels with the classifier function uisng in_arg.arch, comparing the
+        # labels, and creating a dictionary of results (result_dic)
+        result_dic = classify_images()
 
-    # TODO: 5. Define adjust_results4_isadog() function to adjust the results
-    # dictionary(result_dic) to determine if classifier correctly classified
-    # images as 'a dog' or 'not a dog'. This demonstrates if the model can
-    # correctly classify dog images as dogs (regardless of breed)
-    adjust_results4_isadog()
+        # TODO: 5. Define adjust_results4_isadog() function to adjust the results
+        # dictionary(result_dic) to determine if classifier correctly classified
+        # images as 'a dog' or 'not a dog'. This demonstrates if the model can
+        # correctly classify dog images as dogs (regardless of breed)
+        adjust_results4_isadog()
 
-    # TODO: 6. Define calculates_results_stats() function to calculate
-    # results of run and puts statistics in a results statistics
-    # dictionary (results_stats_dic)
-    results_stats_dic = calculates_results_stats()
+        # TODO: 6. Define calculates_results_stats() function to calculate
+        # results of run and puts statistics in a results statistics
+        # dictionary (results_stats_dic)
+        results_stats_dic = calculates_results_stats()
 
-    # TODO: 7. Define print_results() function to print summary results,
-    # incorrect classifications of dogs and breeds if requested.
-    print_results()
+        # TODO: 7. Define print_results() function to print summary results,
+        # incorrect classifications of dogs and breeds if requested.
+        print_results()
+    except FileNotFoundError as e:
+        print(str(e))
 
-    # TODO: 1. Define end_time to measure total program runtime
-    # by collecting end time
-    end_time = datetime.now()
+    except Exception as e:
+        print(str(e))
 
-    # TODO: 1. Define tot_time to computes overall runtime in
-    # seconds & prints it in hh:mm:ss format
-    net_time = end_time - start_time
-    tot_time = "{:02}:{:02}:{:02}".format(int(net_time.seconds/3600), int(net_time.seconds/60), net_time.seconds)
-    print("\n** Total Elapsed Runtime:", tot_time)
+    finally:
+        # TODO: 1. Define end_time to measure total program runtime
+        # by collecting end time
+        end_time = datetime.now()
+
+        # TODO: 1. Define tot_time to computes overall runtime in
+        # seconds & prints it in hh:mm:ss format
+        net_time = end_time - start_time
+        tot_time = "{:02}:{:02}:{:02}".format(int(net_time.seconds/3600), int(net_time.seconds/60), net_time.seconds)
+        print("\n** Total Elapsed Runtime:", tot_time)
 
 
 
@@ -119,7 +126,7 @@ def get_input_args():
     return parser.parse_args()
 
 
-def get_pet_labels():
+def get_pet_labels(image_dir):
     """
     Creates a dictionary of pet labels based upon the filenames of the image
     files. Reads in pet filenames and extracts the pet image labels from the
@@ -132,10 +139,18 @@ def get_pet_labels():
      petlabels_dic - Dictionary storing image filename (as key) and Pet Image
                      Labels (as value)
     """
-    pass
+    petlabels_dic = {}
+    try:
+        for f in listdir(image_dir):
+            petlabels_dic[f] = f[0:rfind("_").replace("_"," ")]
+
+        return petlabels_dic
+
+    except FileNotFoundError as e:
+        raise FileNotFoundError("Invalid path {} while building pet labels".format(image_dir))
 
 
-def classify_images():
+def classify_images(images_dir, petlabel_dic):
     """
     Creates classifier labels with classifier function, compares labels, and
     creates a dictionary containing both labels and comparison of them to be
