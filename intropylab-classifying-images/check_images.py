@@ -23,7 +23,8 @@
 import argparse
 from time import time, sleep
 from os import listdir
-from datetime import datetime, time
+from datetime import datetime, timedelta
+from random import choice
 
 # Imports classifier function for using CNN to classify images
 from classifier import classifier
@@ -102,12 +103,18 @@ def get_input_args():
      python check_images.py --dir pet_images/ --arch vgg --dogfile dognames.txt
     """
     parser = argparse.ArgumentParser("Classify pictures contining dogs")
-    parser.add_argument("--dir", help="Directory where images are stored",\
-                        type=str)
-    parser.add_argument("--arch", help="Architecture which needs to be used \
-                        for classifying the images", type=str)
+    parser.add_argument("--dir", help="Path to the pet image files(default- \
+                        'pet_images/')", type=str, nargs="?", \
+                        const="pet_images/")
+    parser.add_argument("--arch", help="CNN model architecture to use for \
+                        image classification(default- any of the following \
+                        vgg, alexnet, resnet)", type=str, nargs="?", \
+                        const=choice(["vgg", "alexnet", "resnet"]))
     parser.add_argument("--dogfile", help="File which contains details of \
-                        registered dogs", type=str)
+                        registered dogs", type=str, nargs="?", \
+                        const="dognames.txt")
+
+    #args = parser.parse_args()
 
     return parser.parse_args()
 
