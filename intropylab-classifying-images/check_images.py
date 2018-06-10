@@ -98,8 +98,20 @@ def get_input_args():
      None - simply using argparse module to create & store command line arguments
     Returns:
      parse_args() -data structure that stores the command line arguments object
+     python check_images.py --dir pet_images/ --arch vgg --dogfile dognames.txt
     """
-    pass
+    parser = argparse.ArgumentParser("Classify pictures contining dogs")
+    parser.add_argument("--dir", help="Directory where images are stored",\
+                        type=str)
+    parser.add_argument("--arch", help="Architecture which needs to be used \
+                        for classifying the images", type=str)
+    parser.add_argument("--dogfile", help="File which contains details of \
+                        registered dogs", type=str)
+
+    args = parser.parse_args()
+
+    print(args)
+    return args
 
 
 def get_pet_labels():
