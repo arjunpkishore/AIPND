@@ -72,7 +72,8 @@ def main():
 
     # TODO: 1. Define tot_time to computes overall runtime in
     # seconds & prints it in hh:mm:ss format
-    tot_time = time(end_time - start_time)
+    net_time = end_time - start_time
+    tot_time = "{:02}:{:02}:{:02}".format(int(net_time.seconds/3600), int(net_time.seconds/60), net_time.seconds)
     print("\n** Total Elapsed Runtime:", tot_time)
 
 
@@ -108,10 +109,7 @@ def get_input_args():
     parser.add_argument("--dogfile", help="File which contains details of \
                         registered dogs", type=str)
 
-    args = parser.parse_args()
-
-    print(args)
-    return args
+    return parser.parse_args()
 
 
 def get_pet_labels():
